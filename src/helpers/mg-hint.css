@@ -1,0 +1,13 @@
+#mg-gui-hint table{
+    background-color: dimgrey;
+    border-color: whitesmoke;
+    font-family: arial;
+    font-size: 8pt;
+    color: whitesmoke;
+    border-collapse: collapse;
+    cursor: default;
+}
+#mg-gui-hint tr td{
+    border: solid 1px;
+    padding: 5px;
+}

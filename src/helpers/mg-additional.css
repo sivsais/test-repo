@@ -1,0 +1,23 @@
+.mg-gui-additional-move{
+    background-color: dimgrey;
+    height: 15px;
+    cursor: pointer;
+}
+.mg-gui-additional-close{
+    height: 15px;
+    width: 15px;
+    float: right;
+    background-color: dimgray;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    text-align: center;
+}
+.mg-gui-additional-close:hover{
+    background-color: darkgrey;
+}
+.mg-gui-additional-cross {
+    margin-bottom: 23%;
+    width: 50%;
+    height: 50%;
+}
