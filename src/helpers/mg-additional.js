@@ -1,31 +1,25 @@
-define(['jquery', 'dat'], function ($, GUI) {
+define(
+    ['jquery', 'dat', 'utils/css', 'text!helpers/mg-additional.css', 'text!helpers/mg-additional-cross.svg'],
+    function ($, GUI, css, style, cross) {
     var $body;
 
     var click_point = {};
     var isMove = false;
 
+    css.inject(style);
+
     return {
         create: function (data) {
             var $move_panel, $gui_container;
             var $additional = $('<div>')
-                .addClass('mg-additional')
+                .addClass('mg-gui-additional')
                 .css({position: 'absolute'})
                 .append($move_panel = $('<div>')
-                    .addClass('mg-move_panel')
-                    .css({
-                        height: 15,
-                        'background-color': 'blue'
-                    }))
+                    .addClass('mg-gui-additional-move'))
                 .append($gui_container = $('<div>')
-                    .addClass('mg-gui-container'));
+                    .addClass('mg-gui-additional-container'));
 
-            var $close = $('<div>').addClass('mg-close-button')
-                .css({
-                    height: 15,
-                    width: 15,
-                    float: 'right',
-                    'background-color': 'red'
-                });
+            var $close = $('<div>').addClass('mg-gui-additional-close').html(cross);
             $close.click(function () {
                 $additional.remove();
             });

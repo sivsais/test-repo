@@ -1,6 +1,6 @@
-define(['jquery'], function ($) {
+define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, style) {
     var div = $('<div>')
-        .attr('id', 'mg-hint')
+        .attr('id', 'mg-gui-hint')
         .css({position: 'absolute'})
         .append('<table>');
 
@@ -8,6 +8,8 @@ define(['jquery'], function ($) {
     var exist = false;
     var $body;
     var $document;
+
+    css.inject(style);
 
     var hint = {
         data: {},
