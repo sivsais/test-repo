@@ -105,11 +105,32 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
             }
         ]
     };
+    var  example_tool_2 = {
+        fields: [
+            {id: 1,
+                type: 'button',
+                icon: './src/images/1.png',
+                callback: function(){console.log(1)}
+            },
+            {id: 2,
+                type: 'button',
+                icon: './src/images/2.png',
+                callback: function(){console.log(2)}
+            },
+            {id: 3,
+                type: 'selectable',
+                icon: './src/images/3.png',
+                callback: function(){console.log(3)},
+                callback_disable: function(){console.log(4)}
+            }
+        ]
+    };
     $(document).ready(function() {
 //        var add = additional.create(example);
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
-        helpers.toolbar.on($('#toolbar_place'), 2, 'tb', example_tool);
+        helpers.toolbar.on($('#toolbar_place'), 2, example_tool);
+        helpers.toolbar.refresh(example_tool_2);
     });
 
 });
