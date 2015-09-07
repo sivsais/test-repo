@@ -1,9 +1,10 @@
-define(['helpers/mg-hint', 'helpers/mg-additional', 'helpers/mg-toolbar'],
-    function (hint, additional, toolbar) {
+define(['helpers/mg-hint', 'helpers/mg-additional', 'helpers/mg-toolbar', 'helpers/mg-contextual'],
+    function (hint, additional, toolbar, contextual) {
         return {
             hint: hint,
             additional: additional,
-            toolbar: toolbar
+            toolbar: toolbar,
+            contextual: contextual
         }
     }
 );
