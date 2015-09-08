@@ -125,15 +125,107 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
             }
         ]
     };
+
+    var example_popup = {
+        fields:[
+            {
+                type: 'input',
+                group: [{
+                    id: 1,
+                    label: 'aaa',
+                    value: "bbb"
+                },{
+                    id: 2,
+                    label: 'ccc',
+                    value: "ddd"
+                },{
+                    id: 3,
+                    label: 'eee',
+                    value: "fff"
+                }]
+            },
+            {
+                type: 'checkbox',
+                group: [{
+                    id: 4,
+                    label: 'aaa',
+                    value: true
+                },{
+                    id: 5,
+                    label: 'ccc',
+                    value: true
+                },{
+                    id: 6,
+                    label: 'eee',
+                    value: false
+                }]
+            },
+            {
+                type: 'radio',
+                name:'asdf',
+                group: [{
+                    id: 7,
+                    label: 'aaa',
+                    value: true
+                },{
+                    id: 8,
+                    label: 'ccc',
+                    value: false
+                },{
+                    id: 9,
+                    label: 'eee',
+                    value: false
+                }]
+            },
+            {
+                type: 'select',
+                group: [{
+                    label: 'aaa',
+                    id: 10,
+                    options:[
+                        {name:123,
+                         value:1},
+                        {name:1234,
+                         value:2},
+                        {name:12345,
+                         value:3,
+                         selected: true}
+                    ]
+                },{
+                    label: 'aaa',
+                    id: 11,
+                    options:[
+                        {name:1223,
+                         value:11},
+                        {name:12234,
+                         value:21,
+                         selected: true},
+                        {name:122345,
+                         value:31}
+                    ]
+                }]
+            }
+        ],
+        buttons: [
+            { name:'button1',
+              callback: function(data){console.log(data)}
+            },
+            { name:'button2',
+                callback: function(data){console.log(data)}
+            }
+        ]
+    };
     $(document).ready(function() {
 //        var add = additional.create(example);
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
-        helpers.toolbar.init($('#toolbar_place'), 2, 1);
-        helpers.toolbar.on(example_tool);
+//        helpers.toolbar.init($('#toolbar_place'), 2, 1);
+//        helpers.toolbar.on(example_tool);
 //        helpers.toolbar.refresh(example_tool_2);
 //        helpers.contextual.init($('#toolbar_place'), 2);
-//        helpers.contextual.on(example_tool_2)
+//        helpers.contextual.on(example_tool_2);
+//        helpers.contextual.off();
+        helpers.popup.on(example_popup);
     });
 
 });

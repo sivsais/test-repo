@@ -146,7 +146,7 @@ define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css,
             }
             $body.append($box);
             $box.hide();
-            buttons = [];
+            buttons
         },
         on: function (data) {
 
