@@ -7,7 +7,8 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         $container,
         $box,
         buttons,
-        toolbar;
+        toolbar,
+        count;
 
     css.inject(style);
 
@@ -49,6 +50,14 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             $tr = $('<tr>');
             for (j = i; j < columns + i; j++) {
                 if (j < fields.length) {
+                    button = {};
+                    if (fields[j].id) {
+                        button.id = fields[j].id
+                    }else {
+                        fields[j].id = count;
+                        button.id = count;
+                        count++;
+                    }
 
                     if (fields[j].fields != undefined) {
 
@@ -66,19 +75,18 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     $tr.append($td
                         .append($('<img>')
                             .attr('src', fields[j].icon)));
-                    button.id = fields[j].id;
                     if (fields[j].type == 'button') {
                         button_click($td, fields, j);
                     }else {
                         if (fields[j].type == 'menu') {
-                            fields[j].callback = create_box;
-                            fields[j].callback_disable = hide_box;
+                            fields[j].select = create_box;
+                            fields[j].unselect = hide_box;
                         }
                         $td.addClass('disabled');
-                        button.off = fields[j].callback_disable;
+                        button.off = fields[j].unselect;
                         selectable_click($td, fields, j);
                     }
-                    button.on = fields[j].callback;
+                    button.on = fields[j].select;
                     buttons.push(button);
                 }
             }
@@ -91,7 +99,9 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         (function () {
             var idx = index;
             $td.click(function () {
-                fields[idx].callback();
+                if (fields[idx].select) {
+                    fields[idx].select();
+                }
             })
         })();
     }
@@ -116,12 +126,14 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                             buttons[k].button.removeClass('enabled').addClass('disabled');
                         }
                     }
-                    fields[idx].callback(fields[idx]);
+                    if (fields[idx].select) {
+                        fields[idx].select(fields[idx]);
+                    }
                 }else {
                     $(this).addClass('disabled').removeClass('enabled');
-
-                    fields[idx].callback_disable();
-
+                    if (fields[idx].unselect) {
+                        fields[idx].unselect();
+                    }
                 }
             })
         })();
@@ -137,7 +149,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             $document = $(document);
             exist = true;
             if ($toolbar_container) {
-                $container = $toolbar_container;
+                $container = $($toolbar_container);
             }else {
                 $container = $body;
             }
@@ -153,6 +165,8 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             }
             $body.append($box);
             $box.hide();
+
+            count = 1;
         },
         on: function (data) {
 
