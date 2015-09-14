@@ -1,45 +1,52 @@
 define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css, style) {
+    var exist,
+        $body,
+        $document,
+        columns,
+        box_columns,
+        $container,
+        $box,
+        buttons,
+        toolbar;
 
     css.inject(style);
 
+    exist = false;
 
+    $box = $('<div>').attr({id: 'toolbar_box', class: 'hide'}).css({position: 'absolute'});
 
-    var exist = false;
-    var $body;
-    var $document;
-    var box_exist = false;
-    var columns;
-    var box_columns;
-    var $container;
-
-    var $box = $('<div>').attr({id:'toolbar_box', class: 'hide'}).css({position: 'absolute'});
-
-    var create_box = function(data) {
+    function create_box(data) {
+        var $tb = $('.enabled');
         $box.show();
         $box.empty();
-        var $tb = $('.enabled');
         $box.offset({left: $tb.offset().left + $tb.width(), top: $tb.offset().top});
         $box.append(create_toolbar(data, box_columns))
 
-    };
-    var hide_box = function() {
+    }
+    function hide_box() {
         $box.hide();
-    };
-    var buttons = [];
+    }
+    buttons = [];
 
-    var create_toolbar = function(data, columns) {
-        var $div = $('<div>')
+    function create_toolbar(data, columns) {
+        var $div,
+            $table,
+            i, j, k,
+            fields,
+            $tr,
+            $td,
+            button;
+        $div = $('<div>')
             .append('<table>');
 
-        var $table = $($div.children()[0]);
+        $table = $($div.children()[0]);
 
 
-        var i, j, k;
-        var fields = data.fields;
+        fields = data.fields;
 
 
         for (i = 0; i < fields.length; i += columns) {
-            var $tr = $('<tr>');
+            $tr = $('<tr>');
             for (j = i; j < columns + i; j++) {
                 if (j < fields.length) {
 
@@ -50,8 +57,8 @@ define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css,
                         }
                     }
 
-                    var $td = $('<td>');
-                    var button = {
+                    $td = $('<td>');
+                    button = {
                         button: $td,
                         type: fields[j].type,
                         parent: fields[j].parent
@@ -62,8 +69,7 @@ define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css,
                     button.id = fields[j].id;
                     if (fields[j].type == 'button') {
                         button_click($td, fields, j);
-                    }
-                    else {
+                    }else {
                         if (fields[j].type == 'menu') {
                             fields[j].callback = create_box;
                             fields[j].callback_disable = hide_box;
@@ -79,38 +85,39 @@ define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css,
             $table.append($tr);
         }
         return $div;
-    };
+    }
 
-    var button_click = function($td, fields, index){
-        (function(){
+    function button_click($td, fields, index) {
+        (function () {
             var idx = index;
             $td.click(function () {
                 fields[idx].callback();
             })
         })();
-    };
+    }
 
 
-    var selectable_click = function($td, fields, index){
-        (function(){
-            var idx = index;
-            var field = fields[idx];
-            var k;
-
+    function selectable_click($td, fields, index) {
+        (function () {
+            var idx,
+                field,
+                k;
+            idx = index;
+            field = fields[idx];
             $td.click(function () {
-                if($(this).hasClass('disabled')) {
+                if ($(this).hasClass('disabled')) {
 
                     $(this).removeClass('disabled').addClass('enabled');
 
-                    for(k = 0; k < buttons.length; k++){
+                    for (k = 0; k < buttons.length; k++) {
 
-                        if(buttons[k].off != undefined && buttons[k].id != field.id && buttons[k].id != field.parent){
+                        if (buttons[k].off != undefined && buttons[k].id != field.id && buttons[k].id != field.parent) {
                             buttons[k].off();
                             buttons[k].button.removeClass('enabled').addClass('disabled');
                         }
                     }
                     fields[idx].callback(fields[idx]);
-                }else{
+                }else {
                     $(this).addClass('disabled').removeClass('enabled');
 
                     fields[idx].callback_disable();
@@ -118,35 +125,34 @@ define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css,
                 }
             })
         })();
-    };
+    }
 
-    var toolbar = {
-        refresh: function(data){
+    toolbar = {
+        refresh: function (data) {
             buttons = [];
             $container.append(create_toolbar(data, columns))
         },
-        init: function($toolbar_container, columns_count, box_columns_count) {
+        init: function ($toolbar_container, columns_count, box_columns_count) {
             $body = $('body');
             $document = $(document);
             exist = true;
-            if($toolbar_container) {
+            if ($toolbar_container) {
                 $container = $toolbar_container;
-            }else{
+            }else {
                 $container = $body;
             }
-            if(columns_count) {
+            if (columns_count) {
                 columns = columns_count;
-            }else{
+            }else {
                 columns = 2;
             }
-            if(box_columns_count) {
+            if (box_columns_count) {
                 box_columns = box_columns_count;
-            }else{
+            }else {
                 box_columns = 3;
             }
             $body.append($box);
             $box.hide();
-            buttons
         },
         on: function (data) {
 

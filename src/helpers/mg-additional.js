@@ -1,17 +1,24 @@
 define(
     ['jquery', 'dat', 'utils/css', 'text!helpers/mg-additional.css', 'text!helpers/mg-additional-cross.svg'],
     function ($, GUI, css, style, cross) {
-    var $body;
+    var $body,
+        click_point,
+        isMove;
 
-    var click_point = {};
-    var isMove = false;
+    click_point = {};
+    isMove = false;
 
     css.inject(style);
 
     return {
         create: function (data) {
-            var $move_panel, $gui_container;
-            var $additional = $('<div>')
+            var $move_panel,
+                $gui_container,
+                $additional,
+                $close,
+                gui;
+
+            $additional = $('<div>')
                 .addClass('mg-gui-additional')
                 .css({position: 'absolute'})
                 .append($move_panel = $('<div>')
@@ -19,7 +26,7 @@ define(
                 .append($gui_container = $('<div>')
                     .addClass('mg-gui-additional-container'));
 
-            var $close = $('<div>').addClass('mg-gui-additional-close').html(cross);
+            $close = $('<div>').addClass('mg-gui-additional-close').html(cross);
             $close.click(function () {
                 $additional.remove();
             });
@@ -62,10 +69,10 @@ define(
             });
 
 
-            var gui = new GUI({autoPlace: false});
+            gui = new GUI({autoPlace: false});
             $gui_container.append(gui.domElement);
 
-            data.fields.forEach(function (i, k) {
+            data.fields.forEach(function (i) {
                 var field;
 
                 switch (i.type) {
@@ -94,7 +101,7 @@ define(
                         break;
                 }
                 field.name(i.name).listen();
-                field.onChange(function (value) {
+                field.onChange(function () {
                     i.change();
                 });
             });

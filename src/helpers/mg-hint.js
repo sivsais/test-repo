@@ -1,27 +1,32 @@
 define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, style) {
-    var div = $('<div>')
+    var $div,
+        $table,
+        exist,
+        $body,
+        $document,
+        hint;
+
+    $div = $('<div>')
         .attr('id', 'mg-gui-hint')
         .css({position: 'absolute'})
         .append('<table>');
 
-    var $table = $(div.children()[0]);
-    var exist = false;
-    var $body;
-    var $document;
+    $table = $($div.children()[0]);
+    exist = false;
 
     css.inject(style);
 
-    var hint = {
+    hint = {
         data: {},
 
         on: function (position) {
             if (!exist) {
                 $body = $('body');
                 $document = $(document);
-                $body.append(div);
+                $body.append($div);
                 exist = true;
             }
-            div.show();
+            $div.show();
             $table.empty();
             Object.keys(hint.data).forEach(function (i) {
                 $table.append(
@@ -31,17 +36,17 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
             });
 
             if (position) {
-                div.offset(
+                $div.offset(
                     {
-                        left: Math.min(Math.max(position.x, 0), $document.width() - div.width()),
-                        top: Math.min(Math.max(position.y, 0), $document.height() - div.height())
+                        left: Math.min(Math.max(position.x, 0), $document.width() - $div.width()),
+                        top: Math.min(Math.max(position.y, 0), $document.height() - $div.height())
                     }
                 );
             }
         },
 
         off: function () {
-            div.hide();
+            $div.hide();
         }
     };
     return hint;

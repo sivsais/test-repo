@@ -1,23 +1,28 @@
 define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, style) {
-    var div = $('<div>')
+    var $div,
+        $table,
+        $body,
+        $document,
+        exist,
+        popup;
+
+    $div = $('<div>')
         .attr('id', 'mg-gui-popup')
         .css({position: 'absolute',
             'z-index': 1000,
             'text-align': 'center',
             width: '100%',
-            height:'100%'})
+            height: '100%'})
         .append('<table>');
 
-    var $table = $(div.children()[0]);
-    var exist = false;
-    var $body;
-    var $document;
+    $table = $($div.children()[0]);
+    exist = false;
 
     css.inject(style);
 
-    var create_input_group = function(data, $box) {
+    function create_input_group(data, $box) {
         var i;
-        for(i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             $box.append($('<label>').text(data[i].label).append(
                 $('<input>')
                     .attr({type: 'text',
@@ -25,10 +30,10 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
                     .val(data[i].value)
                     .addClass('field')));
         }
-    };
-    var create_checkbox_group = function(data, $box) {
+    }
+    function create_checkbox_group(data, $box) {
         var i, $input;
-        for(i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             $box.append($('<label>').text(data[i].label).append($input =
                 $('<input>')
                     .attr({type: 'checkbox',
@@ -38,10 +43,10 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
             $input.prop("checked", data[i].value);
         }
         return $box;
-    };
-    var create_radio_group = function(data, $box, name) {
+    }
+    function create_radio_group(data, $box, name) {
         var i, $input;
-        for(i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             $box.append($('<label>').text(data[i].label).append($input =
                     $('<input>')
                         .attr({type: 'radio',
@@ -52,43 +57,42 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
             $input.prop("checked", data[i].value);
         }
         return $box;
-    };
+    }
 
-    var create_select_group = function(data, $box) {
+    function create_select_group(data, $box) {
         var i, j, $select, $opt;
-        for(i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             $box.append($('<label>').text(data[i].label).append($select = $('<select>')));
-            for(j = 0; j < data[i].options.length; j++){
+            for (j = 0; j < data[i].options.length; j++) {
                 $select.append($opt = $('<option>')
                         .text(data[i].options[j].name)
                         .val(data[i].options[j].value))
                     .addClass('field')
                     .attr({"data-popup-id": data[i].id});
-                if(data[i].options[j].selected){
+                if (data[i].options[j].selected) {
                     $opt.attr("selected", "selected")
                 }
             }
         }
         return $box;
-    };
+    }
 
 
 
-    var popup = {
+    popup = {
 
         on: function (data) {
-            var i;
+            var i, $td, $button, j;
             if (!exist) {
                 $body = $('body');
                 $document = $(document);
-                $body.append(div);
+                $body.append($div);
                 exist = true;
             }
 
-            div.show();
+            $div.show();
             $table.empty();
-            var $td, $button;
-            for(i = 0; i < data.fields.length; i++) {
+            for (i = 0; i < data.fields.length; i++) {
                 $table.append(
                     $('<tr>').append($td = $('<td>'))
                 );
@@ -109,19 +113,18 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
                 }
             }
             $('<tr>').append($td = $('<td>'));
-            for(i = 0; i < data.buttons.length; i++){
+            for (i = 0; i < data.buttons.length; i++) {
 
                 $table.append(
                     $td.append($button = $('<button>').attr({type: 'button'}).text(data.buttons[i].name))
                 );
-                (function(){
+                (function () {
                     var index = i;
-                    var j;
-                    $button.click(function(){
-                        var $fields = $('.field');
-                        var results = {};
-                        for(j = 0; j < $fields.length; j++){
-                            if($($fields[j]).attr("type") == "checkbox" || $($fields[j]).attr("type") == "radio"){
+                    $button.click(function () {
+                        var $fields = $('.field'),
+                            results = {};
+                        for (j = 0; j < $fields.length; j++) {
+                            if ($($fields[j]).attr("type") == "checkbox" || $($fields[j]).attr("type") == "radio") {
                                 results[$($fields[j]).attr("data-popup-id")] = $($fields[j]).prop("checked");
                             }else {
                                 results[$($fields[j]).attr("data-popup-id")] = $($fields[j]).val();
@@ -135,7 +138,7 @@ define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, st
             }
         },
         off: function () {
-            div.hide();
+            $div.hide();
         }
     };
     return popup;
