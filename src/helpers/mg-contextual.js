@@ -1,4 +1,4 @@
-define(['jquery', 'utils/css', 'text!helpers/mg-contextual.css'], function ($, css, style) {
+define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-contextual.css'], function ($, css, style) {
 
     var exist = false,
         $body,

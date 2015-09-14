@@ -1,4 +1,4 @@
-define(['jquery', 'utils/css', 'text!helpers/mg-toolbar.css'], function ($, css, style) {
+define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], function ($, css, style) {
     var exist,
         $body,
         $document,

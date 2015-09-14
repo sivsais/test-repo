@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'dat', 'utils/css', 'text!helpers/mg-additional.css', 'text!helpers/mg-additional-cross.svg'],
+    ['jquery', 'dat', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-additional.css', 'text!mg-gui/helpers/mg-additional-cross.svg'],
     function ($, GUI, css, style, cross) {
     var $body,
         click_point,
@@ -17,6 +17,7 @@ define(
                 $additional,
                 $close,
                 gui;
+            console.log(data);
 
             $additional = $('<div>')
                 .addClass('mg-gui-additional')
@@ -101,8 +102,9 @@ define(
                         break;
                 }
                 field.name(i.name).listen();
-                field.onChange(function () {
-                    i.change();
+                field.onChange(function (value) {
+                    i.change(value);
+                    console.log("value", value)
                 });
             });
 

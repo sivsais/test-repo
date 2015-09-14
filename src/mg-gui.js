@@ -1,4 +1,4 @@
-define(['helpers/mg-hint', 'helpers/mg-additional', 'helpers/mg-toolbar', 'helpers/mg-contextual', 'helpers/mg-popup'],
+define(['mg-gui/helpers/mg-hint', 'mg-gui/helpers/mg-additional', 'mg-gui/helpers/mg-toolbar', 'mg-gui/helpers/mg-contextual', 'mg-gui/helpers/mg-popup'],
     function (hint, additional, toolbar, contextual, popup) {
         return {
             hint: hint,

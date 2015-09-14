@@ -1,4 +1,4 @@
-define(['jquery', 'utils/css', 'text!helpers/mg-hint.css'], function ($, css, style) {
+define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], function ($, css, style) {
     var $div,
         $table,
         $body,
