@@ -4,7 +4,8 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
         $body,
         $document,
         exist,
-        popup;
+        popup,
+        count;
 
     $div = $('<div>')
         .attr('id', 'mg-gui-popup')
@@ -26,9 +27,10 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
             $box.append($('<label>').text(data[i].label).append(
                 $('<input>')
                     .attr({type: 'text',
-                        "data-popup-id": data[i].id})
+                        "data-popup-id": ++count})
                     .val(data[i].value)
                     .addClass('field')));
+            data[i].id = count;
         }
     }
     function create_checkbox_group(data, $box) {
@@ -37,10 +39,11 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
             $box.append($('<label>').text(data[i].label).append($input =
                 $('<input>')
                     .attr({type: 'checkbox',
-                           "data-popup-id": data[i].id})
+                           "data-popup-id": ++count})
                     .addClass('field')
                     ));
             $input.prop("checked", data[i].value);
+            data[i].id = count;
         }
         return $box;
     }
@@ -51,10 +54,11 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
                     $('<input>')
                         .attr({type: 'radio',
                                name: name,
-                               "data-popup-id": data[i].id})
+                               "data-popup-id": ++count})
                         .addClass('field')
             ));
             $input.prop("checked", data[i].value);
+            data[i].id = count;
         }
         return $box;
     }
@@ -68,10 +72,11 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
                         .text(data[i].options[j].name)
                         .val(data[i].options[j].value))
                     .addClass('field')
-                    .attr({"data-popup-id": data[i].id});
+                    .attr({"data-popup-id": ++count});
                 if (data[i].options[j].selected) {
                     $opt.attr("selected", "selected")
                 }
+                data[i].id = count;
             }
         }
         return $box;
@@ -82,14 +87,14 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
     popup = {
 
         on: function (data) {
-            var i, $td, $button, j;
+            var i, k, $td, $button, j;
             if (!exist) {
                 $body = $('body');
                 $document = $(document);
                 $body.append($div);
                 exist = true;
             }
-
+            count = 0;
             $div.show();
             $table.empty();
             for (i = 0; i < data.fields.length; i++) {
@@ -130,7 +135,12 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
                                 results[$($fields[j]).attr("data-popup-id")] = $($fields[j]).val();
                             }
                         }
-                        data.buttons[index].callback(results);
+                        for (j = 0; j < data.fields.length; j++) {
+                            for (k = 0; k < data.fields[j].group.length; k++) {
+                                data.fields[j].group[k].value = results[data.fields[j].group[k].id]
+                            }
+                        }
+                        data.buttons[index].callback(data);
                         popup.off();
                     });
                 })();

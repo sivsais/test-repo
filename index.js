@@ -217,13 +217,13 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
 //        var add = additional.create(example);
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
-        helpers.toolbar.init($('#toolbar_place'), 2, 1);
-        helpers.toolbar.on(example_tool);
+//        helpers.toolbar.init($('#toolbar_place'), 2, 1);
+//        helpers.toolbar.on(example_tool);
         //helpers.toolbar.refresh(example_tool_2);
 //        helpers.contextual.init($('#toolbar_place'), 2);
 //        helpers.contextual.on(example_tool_2);
 //        helpers.contextual.off();
-//        helpers.popup.on(example_popup);
+        helpers.popup.on(example_popup);
     });
 
 });
