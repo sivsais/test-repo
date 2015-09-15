@@ -8,6 +8,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         $box,
         buttons,
         toolbar,
+        all_fields,
         count;
 
     css.inject(style);
@@ -18,30 +19,59 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
 
     function create_box(data) {
         var $tb = $('.enabled');
+        $(".current_toolbar_menu").removeClass("current_toolbar_menu");
+        $tb.addClass("current_toolbar_menu");
         $box.show();
         $box.empty();
         $box.offset({left: $tb.offset().left + $tb.width(), top: $tb.offset().top});
-        $box.append(create_toolbar(data, box_columns))
+        $box.append(create_toolbar(data, box_columns, true))
 
     }
-    function hide_box() {
+    function hide_box(button) {
         $box.hide();
+        $(button.$button.find('img')).attr('src', button.icon);
+        button.off = field_by_button(button).unselect;
+        $box.find('.enabled').removeClass('enabled').addClass('disabled')
     }
     buttons = [];
-
-    function create_toolbar(data, columns) {
+    function field_by_button(button) {
+        var i, j;
+        for (i = 0; i < all_fields.length; i++) {
+            if (button.$__toolbar_id == all_fields[i].$__toolbar_id) {
+                return all_fields[i]
+            }
+            if (all_fields[i].fields) {
+                for (j = 0; j < all_fields[i].fields.length; j++) {
+                    if (button.$__toolbar_id == all_fields[i].fields[j].$__toolbar_id) {
+                        return all_fields[i].fields[j]
+                    }
+                }
+            }
+        }
+    }
+    function button_by_field(field) {
+        var i;
+        for (i = 0; i < buttons.length; i++) {
+            if (field.$__toolbar_id == buttons[i].$__toolbar_id) {
+                return buttons[i]
+            }
+        }
+    }
+    function create_toolbar(data, columns, is_box) {
         var $div,
             $table,
             i, j, k,
-            fields,
             $tr,
             $td,
-            button;
+            button,
+            fields;
         $div = $('<div>')
             .append('<table>');
 
         $table = $($div.children()[0]);
-
+        if (!is_box) {
+            all_fields = data.fields;
+        }
 
         fields = data.fields;
 
@@ -51,27 +81,28 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             for (j = i; j < columns + i; j++) {
                 if (j < fields.length) {
                     button = {};
-                    if (fields[j].id) {
-                        button.id = fields[j].id
+                    if (fields[j].$__toolbar_id) {
+                        button.$__toolbar_id = fields[j].$__toolbar_id
                     }else {
-                        fields[j].id = count;
-                        button.id = count;
+                        fields[j].$__toolbar_id = count;
+                        button.$__toolbar_id = count;
                         count++;
                     }
 
                     if (fields[j].fields != undefined) {
 
                         for (k = 0; k < fields[j].fields.length; k++) {
-                            fields[j].fields[k].parent = fields[j].id;
+                            fields[j].fields[k].parent = fields[j].$__toolbar_id;
                         }
                     }
 
                     $td = $('<td>');
-                    button = {
-                        button: $td,
-                        type: fields[j].type,
-                        parent: fields[j].parent
-                    };
+                    button.$button = $td;
+                    button.type = fields[j].type;
+                    button.icon = fields[j].icon;
+                    button.parent = fields[j].parent;
+
+
                     $tr.append($td
                         .append($('<img>')
                             .attr('src', fields[j].icon)));
@@ -97,10 +128,29 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
 
     function button_click($td, fields, index) {
         (function () {
-            var idx = index;
-            $td.click(function () {
-                if (fields[idx].select) {
-                    fields[idx].select();
+            var k,
+                field,
+                parent,
+                idx = index;
+            $td.click(function (event) {
+                field = fields[idx];
+                if (field.select) {
+                    field.select();
+                }
+                for (k = 0; k < buttons.length; k++) {
+                    if (buttons[k].off != undefined && buttons[k].$__toolbar_id != field.$__toolbar_id &&
+                        buttons[k].$__toolbar_id != field.parent) {
+                        if (buttons[k].$button.hasClass('enabled')) {
+                            buttons[k].off(buttons[k]);
+                            buttons[k].$button.removeClass('enabled').addClass('disabled');
+                        }
+                    }
+                    if (buttons[k].$__toolbar_id == field.parent) {
+                        parent = buttons[k];
+                    }
+                }
+                if (field.type == "button" && parent) {
+                    event.stopPropagation();
                 }
             })
         })();
@@ -111,29 +161,52 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         (function () {
             var idx,
                 field,
-                k;
+                k,
+                parent,
+                button,
+                old;
+            parent = undefined;
             idx = index;
             field = fields[idx];
-            $td.click(function () {
+            $td.click(function (event) {
                 if ($(this).hasClass('disabled')) {
 
                     $(this).removeClass('disabled').addClass('enabled');
 
                     for (k = 0; k < buttons.length; k++) {
-
-                        if (buttons[k].off != undefined && buttons[k].id != field.id && buttons[k].id != field.parent) {
-                            buttons[k].off();
-                            buttons[k].button.removeClass('enabled').addClass('disabled');
+                        if (buttons[k].off != undefined && buttons[k].$__toolbar_id != field.$__toolbar_id &&
+                            buttons[k].$__toolbar_id != field.parent) {
+                            if (buttons[k].$button.hasClass('enabled')) {
+                                buttons[k].off(buttons[k]);
+                                buttons[k].$button.removeClass('enabled').addClass('disabled');
+                            }
+                        }
+                        if (buttons[k].$__toolbar_id == field.parent) {
+                            parent = buttons[k];
                         }
                     }
-                    if (fields[idx].select) {
-                        fields[idx].select(fields[idx]);
+                    button = button_by_field(field);
+                    if (button.on) {
+                        button.on(fields[idx]);
                     }
                 }else {
                     $(this).addClass('disabled').removeClass('enabled');
-                    if (fields[idx].unselect) {
-                        fields[idx].unselect();
+                    button = button_by_field(field);
+                    if (button.off) {
+                        button.off(button)
                     }
+                }
+                if (field.type == 'menu') {
+                    event.stopPropagation();
+
+                }
+                if (parent && field.type != "button") {
+                    $(parent.$button.find('img')).attr('src', field.icon);
+                    old = parent.off;
+                    parent.off = function () {
+                        field.unselect();
+                        old(parent)
+                    };
                 }
             })
         })();
@@ -165,14 +238,19 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             }
             $body.append($box);
             $box.hide();
-
+            $body.click(function () {
+                $box.hide();
+                if ($box.find('.enabled').length == 0) {
+                    $('.current_toolbar_menu').removeClass('enabled').addClass('disabled')
+                }
+            });
             count = 1;
         },
         on: function (data) {
 
             if (exist) {
                 $container.empty();
-                $container.append(create_toolbar(data, columns));
+                $container.append(create_toolbar(data, columns, false));
 
             }
         }
