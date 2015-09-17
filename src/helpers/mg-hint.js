@@ -1,3 +1,6 @@
+/**
+ * @namespace hint
+ */
 define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], function ($, css, style) {
     var $div,
         $table,
@@ -7,7 +10,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
         hint;
 
     $div = $('<div>')
-        .attr('id', 'mg-gui-hint')
+        .addClass("mg-hint")
         .css({position: 'absolute'})
         .append('<table>');
 
@@ -16,9 +19,23 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
 
     css.inject(style);
 
+
+    /**
+     * Hint is interface element, which show key-value table. You may use it for show prompt or title.
+     * Singleton.
+     * @typedef {Object} hint
+     * @property {Object} data Input data like table which will be show
+     */
     hint = {
         data: {},
 
+        /**
+         * Show hint in mentioned position
+         * @method hint.on
+         * @param {Object} [position] Set position of hint. If undefined used last point
+         * @param {number} position.x
+         * @param {number} position.y
+         */
         on: function (position) {
             if (!exist) {
                 $body = $('body');
@@ -45,6 +62,10 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
             }
         },
 
+        /**
+         * Hide hint
+         * @method hint.off
+         */
         off: function () {
             $div.hide();
         }

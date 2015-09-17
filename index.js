@@ -35,38 +35,102 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
             y: 0
         },
         fields: [
-            { name:'txt',
-                type:'text',
-                value: 1,
-                change: function(){console.log(1)}
+            {folder_name:"12345",
+                fields: [
+                    { name: 'txt',
+                        type: 'text',
+                        value: 1,
+                        change: function (value) {console.log(value)},
+                        init: function () {console.log(1234)}
+                    },
+                    { name:'sld',
+                        type:'slider',
+                        value: 2,
+                        min_value: 0,
+                        max_value: 4,
+                        step : 1,
+                        change: function(value){console.log(value)}
+                    }]
             },
+            { name:'sm',
+                type:'select',
+                value: 'ccc',
+                content: ['aaa', 'bbb', 'ccc'],
+                init: function () {console.log(12356454)},
+                change: function(value){console.log(value)}
+            },
+            { name:'cb',
+                type:'checkbox',
+                value: true,
+                change: function(value){console.log(value)}
+            },
+            { name:'col',
+                type:'color',
+                value: "#ffae23",
+                change: function(value){console.log(value)}
+            }
+        ]
+    };
+    var example_slider = {
+        start_position : {
+            x: 0,
+            y: 0
+        },
+        fields: [
             { name:'sld',
                 type:'slider',
                 value: 2,
                 min_value: 0,
                 max_value: 4,
                 step : 1,
-                change: function(){console.log(2)}
+                change: function(value){console.log(value)}
             },
-            { name:'sm',
-                type:'select',
-                value: 'ccc',
-                content: ['aaa', 'bbb', 'ccc'],
-                change: function(){console.log(3)}
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                max_value: 4,
+                step : 1,
+                change: function(value){console.log(value)}
             },
-            { name:'cb',
-                type:'checkbox',
-                value: true,
-                change: function(){console.log(4)}
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                min_value: 0,
+                step : 1,
+                change: function(value){console.log(value)}
             },
-            { name:'col',
-                type:'color',
-                value: "#ffae23",
-                change: function(){console.log(5)}
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                min_value: 0,
+                max_value: 4,
+                change: function(value){console.log(value)}
+            },
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                min_value: 0,
+                change: function(value){console.log(value)}
+            },
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                max_value: 4,
+                change: function(value){console.log(value)}
+            },
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                step : 1,
+                change: function(value){console.log(value)}
+            },
+            { name:'sld',
+                type:'slider',
+                value: 2,
+                change: function(value){console.log(value)}
             }
         ]
     };
-
     var example_tool = {
         fields: [
             {   type: 'button',
@@ -214,7 +278,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
         ]
     };
     $(document).ready(function() {
-//        var add = additional.create(example);
+        var add = additional.create(example);
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
 //        helpers.toolbar.init($('#toolbar_place'), 2, 1);
@@ -223,7 +287,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
 //        helpers.contextual.init($('#toolbar_place'), 2);
 //        helpers.contextual.on(example_tool_2);
 //        helpers.contextual.off();
-        helpers.popup.on(example_popup);
+//        helpers.popup.on(example_popup);
     });
 
 });

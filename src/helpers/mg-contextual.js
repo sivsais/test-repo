@@ -1,3 +1,6 @@
+/**
+ * @namespace contextual
+ */
 define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-contextual.css'], function ($, css, style) {
 
     var exist = false,
@@ -48,14 +51,41 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-contextual.css'], 
             })
         })();
     }
-
+    /**
+     * Contextual is tool panel. It can contain two types of buttons. Simple button and selectable.
+     * Singleton.
+     * @example
+     *     var example_contextual = {
+     *     fields: [
+     *      {   type: 'button',
+     *          icon: './src/images/1.png',
+     *          select: function(){console.log(1)}
+     *      },
+     *      {   type: 'selectable',
+     *          icon: './src/images/2.png',
+     *          select: function(){console.log(3)},
+     *          unselect: function(){console.log(4)}
+     *      }
+     *     ]
+     *     };
+     *        helpers.contextual.init($('#contextual_place'), 2);
+     *        helpers.contextual.on(example_contextual);
+     *        helpers.contextual.off();
+     * @typedef {Object} contextual
+     */
     contextual = {
+        /**
+         * Save options of contextual.
+         * @method contextual.init
+         * @param {Object} $toolbar_container Set container of contextual. It can be jquery or DOM element.
+         * @param {number} columns_count Column count in contextual.
+         */
         init: function ($toolbar_container, columns_count) {
             $body = $('body');
             $document = $(document);
             exist = true;
             if ($toolbar_container) {
-                $container = $toolbar_container;
+                $container = $($toolbar_container);
             }else {
                 $container = $body;
             }
@@ -66,14 +96,37 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-contextual.css'], 
             }
             buttons = [];
         },
-
+        /**
+         * Refresh contextual
+         * @method contextual.refresh
+         * @param {Object} data
+         * @param {Array} data.fields List of buttons in contextual.
+         * @param {string} data.fields.type Type of button. It can be 'button' or 'selectable'.
+         * @param {string} data.fields.icon Source of image.
+         * @param {function} [data.fields.select] Run on click or select.
+         * @param {function} [data.fields.unselect] Run on deactivating.
+         */
         refresh: function (data) {
             buttons = [];
-            contextual.on($container, columns, data)
+            contextual.on(data)
         },
+        /**
+         * Clear contextual container
+         * @method contextual.off
+         */
         off: function () {
             $container.empty();
         },
+        /**
+         * Create contextual
+         * @method contextual.refresh
+         * @param {Object} data
+         * @param {Array} data.fields List of buttons in contextual.
+         * @param {string} data.fields.type Type of button. It can be 'button' or 'selectable'.
+         * @param {string} data.fields.icon Source of image.
+         * @param {function} [data.fields.select] Run on click or select.
+         * @param {function} [data.fields.unselect] Run on deactivating.
+         */
         on: function (data) {
             var $div,
                 $table,

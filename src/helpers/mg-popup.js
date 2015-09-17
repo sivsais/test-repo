@@ -1,3 +1,6 @@
+/**
+ * @namespace popup
+ */
 define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], function ($, css, style) {
     var $div,
         $table,
@@ -5,7 +8,8 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
         $document,
         exist,
         popup,
-        count;
+        count,
+        radio_count;
 
     $div = $('<div>')
         .attr('id', 'mg-gui-popup')
@@ -47,19 +51,20 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
         }
         return $box;
     }
-    function create_radio_group(data, $box, name) {
+    function create_radio_group(data, $box) {
         var i, $input;
         for (i = 0; i < data.length; i++) {
             $box.append($('<label>').text(data[i].label).append($input =
                     $('<input>')
                         .attr({type: 'radio',
-                               name: name,
+                               name: "radio_name+" + radio_count,
                                "data-popup-id": ++count})
                         .addClass('field')
             ));
             $input.prop("checked", data[i].value);
             data[i].id = count;
         }
+        radio_count++;
         return $box;
     }
 
@@ -82,10 +87,110 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
         return $box;
     }
 
-
+    /**
+     * Popup is input panel. It can contain four types of input field: text input, checkbox, radio and select menu.
+     * Also it has to contain at least one button.
+     * Singleton.
+     * @example
+     *var example_popup = {
+     *   fields: [
+     *       {
+     *           type: 'input',
+     *           group: [{
+     *               label: 'aaa',
+     *               value: "bbb"
+     *           },{
+     *               label: 'ccc',
+     *               value: "ddd"
+     *           },{
+     *               label: 'eee',
+     *               value: "fff"
+     *           }]
+     *       },
+     *       {
+     *           type: 'checkbox',
+     *           group: [{
+     *               label: 'aaa',
+     *               value: true
+     *           },{
+     *               label: 'ccc',
+     *               value: true
+     *           },{
+     *               label: 'eee',
+     *               value: false
+     *           }]
+     *       },
+     *       {
+     *           type: 'radio',
+     *           group: [{
+     *               label: 'aaa',
+     *               value: true
+     *           },{
+     *               label: 'ccc',
+     *               value: false
+     *           },{
+     *               label: 'eee',
+     *               value: false
+     *           }]
+     *       },
+     *       {
+     *           type: 'select',
+     *           group: [{
+     *               label: 'aaa',
+     *               options:[
+     *                   {name:123,
+     *                    value:1},
+     *                   {name:1234,
+     *                    value:2},
+     *                   {name:12345,
+     *                    value:3,
+     *                    selected: true}
+     *               ]
+     *           },{
+     *               label: 'aaa',
+     *               options:[
+     *                   {name:123,
+     *                    value:1},
+     *                   {name:1234,
+     *                    value:2,
+     *                    selected: true},
+     *                   {name:12345,
+     *                    value:3}
+     *               ]
+     *           }]
+     *       }
+     *   ],
+     *   buttons: [
+     *       { name:'button1',
+     *         callback: function(data){console.log(data)}
+     *       },
+     *       { name:'button2',
+     *           callback: function(data){console.log(data)}
+     *       }
+     *   ]
+     *};
+     * popup.on(example_popup)
+     * @typedef {Object} popup
+     */
 
     popup = {
-
+        /**
+         * Refresh and create popup
+         * @method popup.on
+         * @param {Object} data
+         * @param {Array} data.fields List of groups in popup.
+         * @param {string} data.fields.type Type of fields in group. It can be 'input', 'checkbox', 'radio' or 'select'.
+         * @param {Array} data.fields.group List of fields.
+         * @param {string} data.fields.group.label Label of field.
+         * @param {number||int||bool||string} data.fields.group.value Value of field (if type isn't 'select').
+         * @param {Array} [data.fields.group.options] List of options in select menu (if type is 'select').
+         * @param {string} [data.fields.group.options.name] Option name (if type is 'select').
+         * @param {number||int||bool||string} [data.fields.group.options.value] Option value (if type is 'select').
+         * @param {bool} [data.fields.group.options.selected] True, if option selected (if type is 'select').
+         * @param {Array} data.buttons List of buttons.
+         * @param {String} data.buttons.name Button name.
+         * @param {function} data.buttons.callback Run on button click.
+         */
         on: function (data) {
             var i, k, $td, $button, j;
             if (!exist) {
@@ -95,6 +200,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
                 exist = true;
             }
             count = 0;
+            radio_count = 0;
             $div.show();
             $table.empty();
             for (i = 0; i < data.fields.length; i++) {
@@ -110,7 +216,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
                         create_checkbox_group(data.fields[i].group, $td);
                         break;
                     case 'radio':
-                        create_radio_group(data.fields[i].group, $td, data.fields[i].name);
+                        create_radio_group(data.fields[i].group, $td);
                         break;
                     case 'select':
                         create_select_group(data.fields[i].group, $td);
@@ -147,6 +253,10 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-hint.css'], functi
 
             }
         },
+        /**
+         * Hide popup container
+         * @method popup.off
+         */
         off: function () {
             $div.hide();
         }

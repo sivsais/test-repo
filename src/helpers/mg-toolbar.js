@@ -1,3 +1,6 @@
+/**
+ * @namespace toolbar
+ */
 define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], function ($, css, style) {
     var exist,
         $body,
@@ -212,11 +215,66 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         })();
     }
 
+    /**
+     * Toolbar is tool panel. It can contain three types of buttons. Simple button, selectable, button and menu button.
+     * Singleton.
+     * @example
+     *     var example_tool = {
+     *     fields: [
+     *      {   type: 'button',
+     *          icon: './src/images/1.png',
+     *          select: function(){console.log(1)}
+     *      },
+     *      {   type: 'selectable',
+     *          icon: './src/images/2.png',
+     *          select: function(){console.log(3)},
+     *          unselect: function(){console.log(4)}
+     *      },
+     *      {   type: 'menu',
+     *          icon: './src/images/3.png',
+     *          fields:[
+     *              {   type: 'button',
+     *                  icon: './src/images/4.png',
+     *                  select: function(){console.log(5)}
+     *              },
+     *              {   type: 'selectable',
+     *                  icon: './src/images/5.png',
+     *                  select: function(){console.log(6)},
+     *                  unselect: function(){console.log(7)}
+     *              }
+     *          ]
+     *        }
+     *      ]
+     *      };
+     *      toolbar.init($('#toolbar_place'), 2, 1);
+     *      toolbar.on(example_tool);
+     *
+     * @typedef {Object} toolbar
+     */
+
     toolbar = {
+        /**
+         * Refresh toolbar
+         * @method toolbar.refresh
+         * @param {Object} data
+         * @param {Array} data.fields List of buttons in toolbar.
+         * @param {string} data.fields.type Type of button. It can be 'button', 'selectable' or 'menu'.
+         * @param {string} data.fields.icon Source of image.
+         * @param {function} [data.fields.select] Run on click or select.
+         * @param {function} [data.fields.unselect] Run on deactivating.
+         * @param {Object} [data.fields.fields] List of buttons in child menu.
+        */
         refresh: function (data) {
             buttons = [];
             $container.append(create_toolbar(data, columns))
         },
+        /**
+         * Save options of toolbar.
+         * @method toolbar.init
+         * @param {Object} $toolbar_container Set container of toolbar. It can be jquery or DOM element.
+         * @param {number} columns_count Column count in toolbar.
+         * @param {number} box_columns_count Column count in child menu.
+         */
         init: function ($toolbar_container, columns_count, box_columns_count) {
             $body = $('body');
             $document = $(document);
@@ -246,6 +304,17 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             });
             count = 1;
         },
+        /**
+         * Create and show toolbar
+         * @method toolbar.on
+         * @param {Object} data
+         * @param {Array} data.fields List of buttons in toolbar.
+         * @param {String} data.fields.type Type of button. It can be 'button', 'selectable' or 'menu'.
+         * @param {String} data.fields.icon Source of image.
+         * @param {Function} [data.fields.select] Run on click or select.
+         * @param {Function} [data.fields.unselect] Run on deactivating.
+         * @param {Object} [data.fields.fields] List of buttons in child menu.
+         */
         on: function (data) {
 
             if (exist) {
