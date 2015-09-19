@@ -185,6 +185,12 @@ define(
                     }
                 });
 
+                $gui_container.find('.cr').addClass('mg-gui-additional-row');
+                $gui_container.find('.title').addClass('mg-gui-additional-title');
+                $gui_container.find('.close-button').addClass('mg-gui-additional-close-button');
+                $gui_container.find('.dg').addClass('mg-gui-additional-dg');
+
+
                 return {
                     domElem: $additional,
                     data: data,
