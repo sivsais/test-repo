@@ -5,13 +5,11 @@ define(
     ['jquery', 'dat', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-additional.css', 'text!mg-gui/helpers/mg-additional-cross.svg'],
     function ($, GUI, css, style, cross) {
         var $body,
-            click_point,
-            isMove,
-            default_start_position;
+
+        default_start_position;
 
         default_start_position = {x: 0, y: 0};
-        click_point = {};
-        isMove = false;
+
 
         css.inject(style);
 
@@ -19,11 +17,17 @@ define(
             var field;
             switch (object.type) {
                 case 'text':
+                    if (object.value == undefined) {
+                        object.value  = ""
+                    }
                     object.value += '';
                     field = place.add(object, 'value');
                     break;
 
                 case 'slider':
+                    if (object.value == undefined) {
+                        object.value  = Math.max(0, object.min_value)
+                    }
                     field = place.add(object, 'value', object.min_value, object.max_value);
                     if (typeof object.step != 'undefined') {
                         field.step(object.step)
@@ -31,14 +35,23 @@ define(
                     break;
 
                 case 'checkbox':
+                    if (object.value == undefined) {
+                        object.value  = false
+                    }
                     field = place.add(object, 'value');
                     break;
 
                 case 'select':
+                    if (object.value == undefined) {
+                        object.value  = object.content[0]
+                    }
                     field = place.add(object, 'value', object.content);
                     break;
 
                 case 'color':
+                    if (object.value == undefined) {
+                        object.value  = '#ffffff'
+                    }
                     field = place.addColor(object, 'value');
                     break;
             }
@@ -116,7 +129,12 @@ define(
                     $gui_container,
                     $additional,
                     $close,
-                    gui;
+                    gui,
+                    click_point,
+                    isMove;
+
+                click_point = {};
+                isMove = false;
 
                 $additional = $('<div>')
                     .addClass('mg-gui-additional')
@@ -134,8 +152,8 @@ define(
 
                 if (!$body) {
                     $body = $('body');
-                    $body.append($additional);
                 }
+                $body.append($additional);
 
 
                 $additional.offset(

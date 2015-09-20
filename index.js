@@ -39,13 +39,13 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
                 fields: [
                     { name: 'txt',
                         type: 'text',
-                        value: 1,
+//                        value: 1,
                         change: function (value) {console.log(value)},
                         init: function () {console.log(1234)}
                     },
                     { name:'sld',
                         type:'slider',
-                        value: 2,
+//                        value: 2,
                         min_value: 0,
                         max_value: 4,
                         step : 1,
@@ -54,19 +54,19 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
             },
             { name:'sm',
                 type:'select',
-                value: 'ccc',
+//                value: 'ccc',
                 content: ['aaa', 'bbb', 'ccc'],
                 init: function () {console.log(12356454)},
                 change: function(value){console.log(value)}
             },
             { name:'cb',
                 type:'checkbox',
-                value: true,
+//                value: true,
                 change: function(value){console.log(value)}
             },
             { name:'col',
                 type:'color',
-                value: "#ffae23",
+//                value: "#ffae23",
                 change: function(value){console.log(value)}
             }
         ]
@@ -279,6 +279,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
     };
     $(document).ready(function() {
         var add = additional.create(example);
+        var add2 = additional.create(example);
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
 //        helpers.toolbar.init($('#toolbar_place'), 2, 1);
