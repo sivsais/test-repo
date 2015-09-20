@@ -46,8 +46,8 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
                     { name:'sld',
                         type:'slider',
 //                        value: 2,
-                        min_value: 0,
-                        max_value: 4,
+                        min_value: 3,
+                        max_value: 5,
                         step : 1,
                         change: function(value){console.log(value)}
                     }]

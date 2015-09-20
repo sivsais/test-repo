@@ -17,17 +17,13 @@ define(
             var field;
             switch (object.type) {
                 case 'text':
-                    if (object.value == undefined) {
-                        object.value  = ""
-                    }
+                    object.value  = object.value || "";
                     object.value += '';
                     field = place.add(object, 'value');
                     break;
 
                 case 'slider':
-                    if (object.value == undefined) {
-                        object.value  = Math.max(0, object.min_value)
-                    }
+                    object.value = object.value || Math.min(Math.max(0, object.min_value || 0), object.max_value ||0 );
                     field = place.add(object, 'value', object.min_value, object.max_value);
                     if (typeof object.step != 'undefined') {
                         field.step(object.step)
@@ -35,23 +31,17 @@ define(
                     break;
 
                 case 'checkbox':
-                    if (object.value == undefined) {
-                        object.value  = false
-                    }
+                    object.value = !!object.value;
                     field = place.add(object, 'value');
                     break;
 
                 case 'select':
-                    if (object.value == undefined) {
-                        object.value  = object.content[0]
-                    }
+                    object.value  = object.value || object.content[0];
                     field = place.add(object, 'value', object.content);
                     break;
 
                 case 'color':
-                    if (object.value == undefined) {
-                        object.value  = '#ffffff'
-                    }
+                    object.value  = object.value || '#ffffff';
                     field = place.addColor(object, 'value');
                     break;
             }
