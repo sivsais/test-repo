@@ -28,7 +28,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
 //            hint.on(pos);
 //        });
 //    });
-    var additional = helpers.additional;
+//    var additional = helpers.additional;
     var example = {
         start_position : {
             x: 0,
@@ -134,31 +134,38 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
     var example_tool = {
         fields: [
             {   type: 'button',
-                icon: './src/images/1.png',
+                //icon: './src/images/1.png',
+                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                 select: function(){console.log(1)}
             },
             {   type: 'button',
-                icon: './src/images/2.png',
+                //icon: './src/images/2.png',
+                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                 select: function(){console.log(2)}
             },
             {   type: 'selectable',
-                icon: './src/images/3.png',
+                //icon: './src/images/3.png',
+                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                 select: function(){console.log(3)},
                 unselect: function(){console.log(4)}
             },
             {   type: 'menu',
-                icon: './src/images/4.png',
+                //icon: './src/images/4.png',
+                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                 fields:[
                     {   type: 'button',
-                        icon: './src/images/5.png',
+                        //icon: './src/images/5.png',
+                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                         select: function(){console.log(5)}
                     },
                     {   type: 'button',
-                        icon: './src/images/6.png',
+                        //icon: './src/images/6.png',
+                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                         select: function(){console.log(6)}
                     },
                     {   type: 'selectable',
-                        icon: './src/images/7.png',
+                        //icon: './src/images/7.png',
+                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
                         select: function(){console.log(7)},
                         unselect: function(){console.log(8)}
                     }
@@ -278,12 +285,14 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
         ]
     };
     $(document).ready(function() {
-        var add = additional.create(example);
-        var add2 = additional.create(example);
+
+        var add = helpers.additional.create(example);
+        //var add2 = additional.create(example);
+
 //        example.fields[0].value = 'aaaa';
 //        console.log(add);
-//        helpers.toolbar.init($('#toolbar_place'), 2, 1);
-//        helpers.toolbar.on(example_tool);
+        helpers.toolbar.init($('#toolbar_place'), 1, 1);
+        helpers.toolbar.on(example_tool);
         //helpers.toolbar.refresh(example_tool_2);
 //        helpers.contextual.init($('#toolbar_place'), 2);
 //        helpers.contextual.on(example_tool_2);

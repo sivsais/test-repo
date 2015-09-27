@@ -19,6 +19,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
     exist = false;
 
     $box = $('<div>').attr({id: 'toolbar_box', class: 'hide'}).css({position: 'absolute'});
+    $box.addClass('mg-gui-toolbar-box');
 
     function create_box(data) {
         var $tb = $('.enabled');
@@ -26,7 +27,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
         $tb.addClass("current_toolbar_menu");
         $box.show();
         $box.empty();
-        $box.offset({left: $tb.offset().left + $tb.width(), top: $tb.offset().top});
+        $box.offset({left: $tb.offset().left + $tb.width() + 1, top: $tb.offset().top});
         $box.append(create_toolbar(data, box_columns, true))
 
     }
@@ -83,6 +84,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             $tr = $('<tr>');
             for (j = i; j < columns + i; j++) {
                 if (j < fields.length) {
+                    $tr.addClass('mg-gui-toolbar-' + fields[j].type);
                     button = {};
                     if (fields[j].$__toolbar_id) {
                         button.$__toolbar_id = fields[j].$__toolbar_id
@@ -100,6 +102,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     }
 
                     $td = $('<td>');
+                    //$td.addClass(';asldkfj');
                     button.$button = $td;
                     button.type = fields[j].type;
                     button.icon = fields[j].icon;
@@ -284,6 +287,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
             }else {
                 $container = $body;
             }
+            $container.addClass('mg-gui-toolbar-container');
             if (columns_count) {
                 columns = columns_count;
             }else {

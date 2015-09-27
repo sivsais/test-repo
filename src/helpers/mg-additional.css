@@ -48,6 +48,9 @@
 }
 .mg-gui-additional-container{
     background-color: #798190;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
 }
 .mg-gui-additional{
     background-color: #798190;
