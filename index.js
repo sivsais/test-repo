@@ -135,46 +135,46 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
         fields: [
             {   type: 'button',
                 //icon: './src/images/1.png',
-                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                icon: 'http://dummyimage.com/15x15/ff0026/fff.png&textB',
                 select: function(){console.log(1)}
             },
             {   type: 'button',
                 //icon: './src/images/2.png',
-                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=B',
                 select: function(){console.log(2)}
             },
             {   type: 'selectable',
                 //icon: './src/images/3.png',
-                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=S',
                 select: function(){console.log(75)},
                 unselect: function(){console.log(70)},
                 group_name: "group2"
             },
             {   type: 'selectable',
                 //icon: './src/images/3.png',
-                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=S',
                 select: function(){console.log(3)},
                 unselect: function(){console.log(4)},
                 group_name: "group1"
             },
             {   type: 'menu',
                 //icon: './src/images/4.png',
-                icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=M',
                 fields:[
                     {   type: 'button',
                         //icon: './src/images/5.png',
-                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                        icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=B',
                         select: function(){console.log(5)}
                     },
                     {   type: 'button',
                         //icon: './src/images/6.png',
-                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                        icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=B',
                         select: function(){console.log(6)}
                     },
                     {   type: 'selectable',
                         group_name: "group1",
                         //icon: './src/images/7.png',
-                        icon: 'http://dummyimage.com/30x30/ff0026/fff.png&text=A',
+                        icon: 'http://dummyimage.com/15x15/ff0026/fff.png&text=S',
                         select: function(){console.log(7)},
                         unselect: function(){console.log(8)}
                     }
