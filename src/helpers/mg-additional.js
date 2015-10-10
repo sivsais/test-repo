@@ -14,7 +14,7 @@ define(
         css.inject(style);
 
         function add_element(place, object) {
-            var field;
+            var field, old_value;
             switch (object.type) {
                 case 'text':
                     object.value  = object.value || "";
@@ -24,10 +24,13 @@ define(
 
                 case 'slider':
                     object.value = object.value || Math.min(Math.max(0, object.min_value || 0), object.max_value ||0 );
+                    old_value = object.value;
+                    object.value = object.step;
                     field = place.add(object, 'value', object.min_value, object.max_value);
                     if (typeof object.step != 'undefined') {
                         field.step(object.step)
                     }
+                    object.value = old_value;
                     break;
 
                 case 'checkbox':
