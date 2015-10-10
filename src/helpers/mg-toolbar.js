@@ -21,20 +21,22 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
     $box = $('<div>').attr({id: 'toolbar_box', class: 'hide'}).css({position: 'absolute'});
     $box.addClass('mg-gui-toolbar-box');
 
-    function create_box(data) {
-        var $tb = $('.enabled');
+    function create_box(data, $td) {
         $(".current_toolbar_menu").removeClass("current_toolbar_menu");
-        $tb.addClass("current_toolbar_menu");
+        $td.addClass("current_toolbar_menu");
         $box.show();
         $box.empty();
-        $box.offset({left: $tb.offset().left + $tb.width() + 1, top: $tb.offset().top});
+        $box.offset({left: $td.offset().left + $td.width() + 1, top: $td.offset().top});
         $box.append(create_toolbar(data, box_columns, true))
 
     }
     function hide_box(button) {
+        var field;
         $box.hide();
         $(button.$button.find('img')).attr('src', button.icon);
-        button.off = field_by_button(button).unselect;
+        field = field_by_button(button);
+        button.off = field.unselect;
+        button.group_name = field.unselect;
         $box.find('.enabled').removeClass('enabled').addClass('disabled')
     }
     buttons = [];
@@ -102,11 +104,11 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     }
 
                     $td = $('<td>');
-                    //$td.addClass(';asldkfj');
                     button.$button = $td;
                     button.type = fields[j].type;
                     button.icon = fields[j].icon;
                     button.parent = fields[j].parent;
+                    button.group_name = fields[j].group_name;
 
 
                     $tr.append($td
@@ -144,13 +146,13 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     field.select();
                 }
                 for (k = 0; k < buttons.length; k++) {
-                    if (buttons[k].off != undefined && buttons[k].$__toolbar_id != field.$__toolbar_id &&
-                        buttons[k].$__toolbar_id != field.parent) {
-                        if (buttons[k].$button.hasClass('enabled')) {
-                            buttons[k].off(buttons[k]);
-                            buttons[k].$button.removeClass('enabled').addClass('disabled');
-                        }
-                    }
+                    //if (buttons[k].off != undefined && buttons[k].$__toolbar_id != field.$__toolbar_id &&
+                    //    buttons[k].$__toolbar_id != field.parent) {
+                    //    if (buttons[k].$button.hasClass('enabled')) {
+                    //        buttons[k].off(buttons[k]);
+                    //        buttons[k].$button.removeClass('enabled').addClass('disabled');
+                    //    }
+                    //}
                     if (buttons[k].$__toolbar_id == field.parent) {
                         parent = buttons[k];
                     }
@@ -181,7 +183,9 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
 
                     for (k = 0; k < buttons.length; k++) {
                         if (buttons[k].off != undefined && buttons[k].$__toolbar_id != field.$__toolbar_id &&
-                            buttons[k].$__toolbar_id != field.parent) {
+                            buttons[k].$__toolbar_id != field.parent && buttons[k].group_name == field.group_name) {
+                            //console.log('k', buttons[k]);
+                            //console.log('field', field);
                             if (buttons[k].$button.hasClass('enabled')) {
                                 buttons[k].off(buttons[k]);
                                 buttons[k].$button.removeClass('enabled').addClass('disabled');
@@ -193,7 +197,7 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     }
                     button = button_by_field(field);
                     if (button.on) {
-                        button.on(fields[idx]);
+                        button.on(fields[idx], $(this));
                     }
                 }else {
                     $(this).addClass('disabled').removeClass('enabled');
@@ -211,7 +215,8 @@ define(['jquery', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-toolbar.css'], fun
                     old = parent.off;
                     parent.off = function () {
                         field.unselect();
-                        old(parent)
+                        old(parent);
+                        parent.group_name = field_by_button(parent).group_name;
                     };
                 }
             })
