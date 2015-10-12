@@ -25,6 +25,9 @@ define(
                 case 'slider':
                     object.value = object.value || Math.min(Math.max(0, object.min_value || 0), object.max_value ||0 );
                     old_value = object.value;
+                    if (!object.step) {
+                        object.step = 0.01;
+                    }
                     object.value = object.step;
                     field = place.add(object, 'value', object.min_value, object.max_value);
                     if (typeof object.step != 'undefined') {
