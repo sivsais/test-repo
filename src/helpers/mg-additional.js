@@ -225,7 +225,7 @@ define(
                         ctrl.updateDisplay = (function () {
                             var tmp = ctrl.updateDisplay;
                             return function () {
-                                if (flag) {
+                                if (flag || this.isModified()) {
                                     flag = false;
                                     return tmp.apply(this, arguments);
                                 }
@@ -250,7 +250,7 @@ define(
                                 ctrl.updateDisplay = (function () {
                                     var tmp = ctrl.updateDisplay;
                                     return function () {
-                                        if (flag) {
+                                        if (flag || this.isModified()) {
                                             flag = false;
                                             return tmp.apply(this, arguments);
                                         }
