@@ -20,14 +20,14 @@ require.config({
 
 define(['jquery', 'mg-gui'], function ($, helpers) {
     var hint = helpers.hint;
-//    $(function () {
-//        $(document).click(function (event) {
-//            hint.off();
-//            var pos = {x: event.pageX, y: event.pageY};
-//            hint.data = pos;
-//            hint.on(pos);
-//        });
-//    });
+    $(function () {
+        $(document).click(function (event) {
+            hint.off();
+            var pos = {x: event.pageX, y: event.pageY};
+            hint.data = pos;
+            hint.on(pos);
+        });
+    });
     var additional = helpers.additional;
     var example = {
         start_position : {

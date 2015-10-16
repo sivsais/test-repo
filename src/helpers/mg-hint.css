@@ -1,4 +1,4 @@
-#mg-gui-hint table{
+.mg-hint table{
     background-color: dimgrey;
     border-color: whitesmoke;
     font-family: arial;
@@ -7,7 +7,7 @@
     border-collapse: collapse;
     cursor: default;
 }
-#mg-gui-hint tr td{
+.mg-hint tr td{
     border: solid 1px;
     padding: 5px;
 }
