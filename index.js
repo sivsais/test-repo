@@ -28,7 +28,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
 //            hint.on(pos);
 //        });
 //    });
-//    var additional = helpers.additional;
+    var additional = helpers.additional;
     var example = {
         start_position : {
             x: 0,
@@ -51,6 +51,26 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
                         step : 0.05,
                         change: function(value){console.log(value)}
                     }]
+            },
+            {
+                name: 'haha',
+                type: 'number',
+                min_value: 3,
+                max_value: 5,
+                value: 4,
+                change: function (value) {
+                    console.log('first: ' + value);
+                }
+            },
+            {
+                name: 'haha2',
+                type: 'number',
+                min_value: 3,
+                max_value: 5,
+                value: 4,
+                change: function (value) {
+                    console.log('second: ' + value);
+                }
             },
             { name:'sm',
                 type:'select',
@@ -295,7 +315,7 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
     };
     $(document).ready(function() {
 
-        //var add = helpers.additional.create(example);
+        var add = helpers.additional.create(example);
         //var add2 = additional.create(example);
 
 //        example.fields[0].value = 'aaaa';

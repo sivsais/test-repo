@@ -2,8 +2,9 @@
  * @namespace additional
  */
 define(
-    ['jquery', 'dat', 'mg-gui/utils/css', 'text!mg-gui/helpers/mg-additional.css', 'text!mg-gui/helpers/mg-additional-cross.svg'],
-    function ($, GUI, css, style, cross) {
+    ['jquery', 'dat', 'mg-gui/utils/css', 'dat/controllers/NumberControllerBox',
+        'text!mg-gui/helpers/mg-additional.css', 'text!mg-gui/helpers/mg-additional-cross.svg'],
+    function ($, GUI, css, NumberControllerBox, style, cross) {
         var $body,
 
         default_start_position;
@@ -50,13 +51,19 @@ define(
                     object.value  = object.value || '#ffffff';
                     field = place.addColor(object, 'value');
                     break;
+
+                case 'number':
+                    object.value = object.value || 0;
+                    field = place.add(object, 'value');
+                    object.step && field.step(object.step);
+                    break;
             }
             if (object.init) {
                 object.init();
             }
             field.name(object.name).listen();
             field.onChange(function (value) {
-                object.change(value);
+                object.change && object.change(value);
             });
         }
 
@@ -204,6 +211,30 @@ define(
                 $gui_container.find('.close-button').addClass('mg-gui-additional-close-button');
                 $gui_container.find('.dg').addClass('mg-gui-additional-dg');
 
+
+                gui.__controllers.forEach(function (ctrl) {
+                    if (ctrl instanceof NumberControllerBox) {
+                        var flag = false;
+                        ctrl.setValue = (function () {
+                            var tmp = ctrl.setValue;
+                            return function () {
+                                flag = true;
+                                return tmp.apply(this, arguments);
+                            }
+                        })();
+
+                        ctrl.updateDisplay = (function () {
+                            var tmp = ctrl.updateDisplay;
+                            return function () {
+                                if (flag) {
+                                    flag = false;
+                                    return tmp.apply(this, arguments);
+                                }
+                                return null;
+                            }
+                        })();
+                    }
+                });
 
                 return {
                     domElem: $additional,
