@@ -211,7 +211,6 @@ define(
                 $gui_container.find('.close-button').addClass('mg-gui-additional-close-button');
                 $gui_container.find('.dg').addClass('mg-gui-additional-dg');
 
-
                 gui.__controllers.forEach(function (ctrl) {
                     if (ctrl instanceof NumberControllerBox) {
                         var flag = false;
@@ -233,6 +232,33 @@ define(
                                 return null;
                             }
                         })();
+                    }
+                });
+                Object.keys(gui.__folders).forEach(function (folder) {
+                    if (gui.__folders[folder] instanceof GUI) {
+                        gui.__folders[folder].__controllers.forEach(function (ctrl) {
+                            if (ctrl instanceof NumberControllerBox) {
+                                var flag = false;
+                                ctrl.setValue = (function () {
+                                    var tmp = ctrl.setValue;
+                                    return function () {
+                                        flag = true;
+                                        return tmp.apply(this, arguments);
+                                    }
+                                })();
+
+                                ctrl.updateDisplay = (function () {
+                                    var tmp = ctrl.updateDisplay;
+                                    return function () {
+                                        if (flag) {
+                                            flag = false;
+                                            return tmp.apply(this, arguments);
+                                        }
+                                        return null;
+                                    }
+                                })();
+                            }
+                        });
                     }
                 });
 

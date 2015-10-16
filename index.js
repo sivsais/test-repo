@@ -50,6 +50,16 @@ define(['jquery', 'mg-gui'], function ($, helpers) {
                         max_value: 5,
                         step : 0.05,
                         change: function(value){console.log(value)}
+                    },
+                    {
+                        name: 'haha3',
+                        type: 'number',
+                        min_value: 3,
+                        max_value: 5,
+                        value: 4,
+                        change: function (value) {
+                            console.log('third: ' + value);
+                        }
                     }]
             },
             {
