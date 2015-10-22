@@ -53,9 +53,21 @@ define(
                     break;
 
                 case 'number':
-                    object.value = object.value || 0;
-                    field = place.add(object, 'value');
-                    object.step && field.step(object.step);
+                    object.value = object.value || Math.min(Math.max(0, object.min_value || 0), object.max_value ||0 );
+                    old_value = object.value;
+                    if (!object.step) {
+                        object.step = 0.01;
+                    }
+                    object.value = object.step;
+                    field = place.add(object, 'value', object.min_value, object.max_value);
+                    if (typeof object.step != 'undefined') {
+                        field.step(object.step);
+                    }
+                    object.value = old_value;
+                    if (typeof object.editable === 'undefined') {
+                        object.editable = true;
+                    }
+                    !!object.editable && editableNumberController(field);
                     break;
             }
             if (object.init) {
@@ -211,57 +223,6 @@ define(
                 $gui_container.find('.close-button').addClass('mg-gui-additional-close-button');
                 $gui_container.find('.dg').addClass('mg-gui-additional-dg');
 
-                gui.__controllers.forEach(function (ctrl) {
-                    if (ctrl instanceof NumberControllerBox) {
-                        var flag = false;
-                        ctrl.setValue = (function () {
-                            var tmp = ctrl.setValue;
-                            return function () {
-                                flag = true;
-                                return tmp.apply(this, arguments);
-                            }
-                        })();
-
-                        ctrl.updateDisplay = (function () {
-                            var tmp = ctrl.updateDisplay;
-                            return function () {
-                                if (flag || this.isModified()) {
-                                    flag = false;
-                                    return tmp.apply(this, arguments);
-                                }
-                                return null;
-                            }
-                        })();
-                    }
-                });
-                Object.keys(gui.__folders).forEach(function (folder) {
-                    if (gui.__folders[folder] instanceof GUI) {
-                        gui.__folders[folder].__controllers.forEach(function (ctrl) {
-                            if (ctrl instanceof NumberControllerBox) {
-                                var flag = false;
-                                ctrl.setValue = (function () {
-                                    var tmp = ctrl.setValue;
-                                    return function () {
-                                        flag = true;
-                                        return tmp.apply(this, arguments);
-                                    }
-                                })();
-
-                                ctrl.updateDisplay = (function () {
-                                    var tmp = ctrl.updateDisplay;
-                                    return function () {
-                                        if (flag || this.isModified()) {
-                                            flag = false;
-                                            return tmp.apply(this, arguments);
-                                        }
-                                        return null;
-                                    }
-                                })();
-                            }
-                        });
-                    }
-                });
-
                 return {
                     domElem: $additional,
                     data: data,
@@ -283,4 +244,19 @@ define(
                 default_start_position.y = position.y;
             }
         };
+
+        function editableNumberController(ctrl) {
+            var last = null;
+            ctrl.updateDisplay = (function () {
+                var tmp = ctrl.updateDisplay;
+                return function () {
+                    if (this.getValue() !== last) {
+                        var ret = tmp.apply(this, arguments);
+                        last = this.getValue();
+                        return ret;
+                    }
+                    return null;
+                };
+            })();
+        }
     });
