@@ -1,0 +1,26 @@
+{
+  "name": "mg-gui",
+  "version": "0.0.4",
+  "authors": [
+    "sivsais <sivsais@gmail.com>",
+    "nikeSM <abram-999@yandex.ru",
+    "msiv <siwmaks@gmail.com>"
+  ],
+  "description": "Some GUI helpers",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "requirejs": "~2.1.20"
+  },
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "dat-gui": "~0.5.1",
+    "text": "~2.0.14"
+  }
+}

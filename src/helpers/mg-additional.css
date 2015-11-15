@@ -1,0 +1,114 @@
+.mg-gui-additional-move{
+    background-color: #798190;
+    height: 15px;
+    cursor: pointer;
+}
+.mg-gui-additional-close{
+    height: 15px;
+    width: 15px;
+    float: right;
+    background-color: #798190;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    text-align: center;
+}
+.mg-gui-additional-close:hover{
+    background-color: #333e5b;
+}
+.mg-gui-additional-cross {
+    margin-bottom: 23%;
+    width: 50%;
+    height: 50%;
+}
+.mg-gui-additional-container .cr.mg-gui-additional-row {
+    background-color: #333e5b;
+    margin-top: 3px;
+    border-left: 0;
+}
+.mg-gui-additional-container .closed .cr.mg-gui-additional-row {
+    background-color: #333e5b;
+    margin-top: 0;
+}
+.mg-gui-additional-container .title.mg-gui-additional-title {
+    background-color: #333e5b;
+    margin-top: 3px;
+}
+.mg-gui-additional-container .close-button.mg-gui-additional-close-button {
+    background-color: #798190;
+}
+.mg-gui-additional-container .close-button:hover.mg-gui-additional-close-button {
+    background-color: #798190;
+}
+.mg-gui-additional-container .dg .mg-gui-additional-dg{
+    background-color: #798190;
+}
+.mg-gui-additional-container .dg .main.mg-gui-additional-dg{
+    background-color: #798190;
+}
+.mg-gui-additional-container{
+    background-color: #798190;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.22);
+}
+.mg-gui-additional{
+    background-color: #798190;
+}
+.mg-gui-additional-container .slider{
+    background-color: #798190;
+}
+.mg-gui-additional-container .dg .c .slider{
+    background-color: #798190
+}
+.mg-gui-additional-container .dg .c .slider-fg{
+    background-color: white;
+}
+.mg-gui-additional-container .dg .c .slider:hover .slider-fg{
+    background-color: white;
+}
+.mg-gui-additional-container .dg .c .slider:hover{
+    background-color: #798190;
+    color: white;
+}
+.mg-gui-additional-container .dg .c input[type=text] {
+    background: #798190;
+}
+.mg-gui-additional-container .dg .cr.number input[type=text]{
+    color: white;
+}
+.mg-gui-additional-container .dg .cr.number input[type=text]:hover{
+    color: white;
+    background: #798190;
+}
+.mg-gui-additional-container .dg .cr.number input[type=text]:focus{
+    color: white;
+    background: #798190;
+}
+.mg-gui-additional-container .dg .cr.string input[type=text]{
+    color: white;
+    background: #798190;
+}
+.mg-gui-additional-container .dg .cr.string input[type=text]:hover{
+    color: white;
+    background: #798190;
+}
+.mg-gui-additional-container .dg .cr.string input[type=text]:focus{
+    color: white;
+    background: #798190;
+}
+.mg-gui-additional-container select{
+    width: 100%;
+    background: #798190;
+    color: white;
+    border: 0;
+    cursor: pointer;
+}
+.mg-gui-additional-container .dg .cr.boolean:hover{
+    background-color: #333e5b;
+    border-left: 0;
+}
+.mg-gui-additional-container .dg .cr.boolean{
+    border-left: 0;
+}
+
